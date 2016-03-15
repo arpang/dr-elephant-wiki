@@ -1,4 +1,4 @@
-[[[https://github.com/linkedin/dr-elephant/blob/master/images/wiki/dr-elephant-logo-150x150.png|alt="Dr. Elephant Logo"|height=170px|width=170px]]]
+[[https://github.com/linkedin/dr-elephant/blob/master/images/wiki/dr-elephant-logo-150x150.png|alt="Dr. Elephant Logo"|height=170px|width=170px]]
 
 ### [User Guide][user-guide]
 
