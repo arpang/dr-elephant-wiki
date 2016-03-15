@@ -11,12 +11,12 @@
 ### [Tuning Tips][tuning-guide]
 
 
-[user-guide]: https://github.com/linkedin/wiki/User-Guide
+[user-guide]: https://github.com/linkedin/dr-elephant/wiki/User-Guide
 
-[dev-guide]: https://github.com/linkedin/wiki/Developer-Guide
+[dev-guide]: https://github.com/linkedin/dr-elephant/wiki/Developer-Guide
 
-[admin-guide]: https://github.com/linkedin/wiki/Administrator-Guide
+[admin-guide]: https://github.com/linkedin/dr-elephant/wiki/Administrator-Guide
 
-[heuristic-guide]: https://github.com/linkedin/wiki/Tuning-Tips
+[heuristic-guide]: https://github.com/linkedin/dr-elephant/wiki/Heuristics-Guide
 
-[tuning-guide]: https://github.com/linkedin/wiki/Heuristics-Guide
+[tuning-guide]: https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips
