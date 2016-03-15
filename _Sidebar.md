@@ -10,6 +10,8 @@
 
 ### [Tuning Tips][tuning-guide]
 
+### [Rest API] [rest-api]
+
 
 [user-guide]: https://github.com/linkedin/dr-elephant/wiki/User-Guide
 
@@ -20,3 +22,5 @@
 [heuristic-guide]: https://github.com/linkedin/dr-elephant/wiki/Heuristics-Guide
 
 [tuning-guide]: https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips
+
+[rest-api]: https://github.com/linkedin/dr-elephant/wiki/Rest-API
