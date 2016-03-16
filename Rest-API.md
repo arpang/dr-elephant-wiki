@@ -1,13 +1,14 @@
 ### Table of contents
 
-* [ Fetch Application By ID] (#fetch-application-by-id)
-* [ Fetch Application By Job Exec ID] (#fetch-application-by-exec-id)
-* [ Search or Filter Applications ] (#search-or-filter-applications)
-* [ Compare Flow Executions] (#compare-flow-executions)
+* [Fetch Application by ID] (#fetch-application-by-id)
+* [Fetch Application by Job Execution ID] (#fetch-application-by-job-execution-id)
+* [Fetch Application by Flow Execution ID] (#fetch-application-by-flow-execution-id)
+* [Search or Filter Applications ] (#search-or-filter-applications)
+* [Compare Flow Executions] (#compare-flow-executions)
 
 There may be scenarios where a user wants to interact with Dr. Elephant without using the web UI. Dr. Elephant exposes a Rest API which can be used to fetch information. 
 
-## Fetch Application by Id
+## Fetch Application by ID
 Given a app/job id, this will fetch the application information which includes general information about the app and the heuristic analysis results.
 ### URI
 ```
@@ -69,7 +70,7 @@ http://<dr-elephant-host:port>/rest/flowexec
 ### Response Object
 The response object contains list of applications spawned by this flow. Each element of this list is of the form shown in response object of ['fetch by application id'](#fetch-application-by-id).
 
-## Search
+## Search or Filter Applications
 You can search for a job/flow by providing certain parameters. Rest API supports all the search parameters as supported in the UI.
 ### URI
 ```
