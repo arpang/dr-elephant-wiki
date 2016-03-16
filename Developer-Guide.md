@@ -20,9 +20,9 @@ You can get the source code using git. For the Github repository [click here](ht
 ### Compiling the code
 Dr. Elephant runs on Play framework. Play framework must be installed before starting development on Dr. Elephant. You can get the latest copy of  Play framework from https://www.playframework.com/download. Once play is installed, make sure the `play` command is in your $PATH. 
 
-To compile Dr. Elephant, run the compile script. A distribution zip is generated in the zip directory. The compile script takes an optional argument to a compile configuration file where you can specify the Hadoop version and the Spark version to compile with. By default, it uses Hadoop 2.3.0 and Spark 1.4.0. In addition to the versions, you can specify play/sbt options.
+To compile Dr. Elephant, run the compile script. A distribution zip is generated in the zip directory. The compile script takes an optional argument to a compile configuration file where you can specify the Hadoop version and the Spark version to compile with. By default, it uses Hadoop 2.3.0 and Spark 1.4.0. In addition to the compile versions, you can specify any play/sbt options through play_opts.
 ```shell
-$> ./compile.sh [/path/to/compile.conf]
+$> ./compile.sh [./app-conf/compile.conf]
 $> cat compile.conf
 ```
 should output
@@ -57,7 +57,7 @@ $> export PATH=$HADOOP_HOME/bin:$PATH
 ```
 
 ###### Database
-Dr. Elephant is configured to use MySql as the database where it stores the information about jobs and workflows. To deploy Dr. Elephant on your development box follow the below instructions.
+Dr. Elephant requires a database to store information on the jobs and analysis results.
 
 Set up and start mysql locally on your box. You can get the latest version of mysql from https://www.mysql.com/downloads/. Dr. Elephant is currently supported for mysql v. 5.6.4+.
 Create a database called 'drelephant'.
@@ -65,8 +65,9 @@ Create a database called 'drelephant'.
 $> mysql -u root -p
 mysql> create database drelephant
 ```
+You can configure your database url, db name, user and password in elephant.conf file present in the app-conf directory.
 	
-_Configuring a Database:_
+_Configuring a different SQL Database:_
 
 Dr. Elephant is currently configured to work with Mysql. The evolution files contain the mysql DDL statements. If you wish to configure a different SQL database you may follow the instructions [here](https://www.playframework.com/documentation/2.6.x/ScalaDatabase).
 
@@ -83,11 +84,10 @@ Compile Dr. Elephant to generate the distribution. Navigate to the the _dist_ di
 $> cd dist; unzip dr-elephant*.zip; cd dr-elephant*
 ```
 
-If you are running Dr. Elephant for the first time after creating the database, you need to enable evolutions. To do so append _-Devolutionplugin=enabled_ and _-DapplyEvolutions.default=true_ to jvm_props in elephant.conf file.
+If you are running Dr. Elephant for the first time after creating the database, you need to enable evolutions. To do so append(or uncomment jvm_props) _-Devolutionplugin=enabled_ and _-DapplyEvolutions.default=true_ to jvm_props in elephant.conf file.
 ```shell
 $> vim ./app-conf/elephant.conf
-jvm_props=
-"... -Devolutionplugin=enabled -DapplyEvolutions.default=true"
+jvm_props=" -Devolutionplugin=enabled -DapplyEvolutions.default=true"
 ```
 
 To start dr-elephant, run the start script specifying a path to the application's configuration files.
@@ -100,7 +100,9 @@ $> $DR_RELEASE/bin/stop.sh
 ```
 
 The dr-elephant logs are generated in the 'dist' directory besides the dr-elephant release.
+```
 $> less $DR_RELEASE/../logs/elephant/dr_elephant.log
+```
 
 ### Project Structure
     app                             → Contains all the source files
