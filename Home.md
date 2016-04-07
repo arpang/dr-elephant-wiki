@@ -4,22 +4,21 @@
   <img src="https://github.com/linkedin/dr-elephant/blob/master/images/wiki/dr-elephant-logo-300x300.png"/>
 </p>
 
-**Dr. Elephant** is a performance monitoring and tuning tool for Hadoop. He automatically gathers all the metrics, runs analysis on them presents them in a simple way for easy consumption. His goal is to improve developer productivity and increase cluster efficiency by making it easier to tune Hadoop jobs. He analyzes Hadoop/Spark jobs using a set of configurable, rule based heuristics that provide insights on how a job performed and uses the results to make suggestions on how to tune the job to make it perform more efficiently.
+**Dr. Elephant** is a performance monitoring and tuning tool for Hadoop and Spark. It automatically gathers all the metrics, runs analysis on them, and presents them in a simple way for easy consumption. Its goal is to improve developer productivity and increase cluster efficiency by making it easier to tune the jobs. It analyzes the Hadoop and Spark jobs using a set of pluggable, configurable, rule-based heuristics that provide insights on how a job performed, and then uses the results to make suggestions about how to tune the job to make it perform more efficiently.
 
 
 ## Why Dr. Elephant?
-Efficient use of Hadoop cluster resources, and developer productivity, are big problems for users of Hadoop. There are
-no actively maintained tools provided by the open source community to bridge this gap. Dr. Elephant, in addition to
-solving this problem, is easy to use and extensible.
+Most of the Hadoop optimization tools out there, whether open source or proprietary, are designed to collect system resource metrics and monitor cluster resources. They are focused on simplifying the deployment and management of Hadoop clusters. Very few tools are designed to help Hadoop users optimize their flows. The ones that are available are either inactive or have failed to scale and support the growing Hadoop frameworks. Dr. Elephant supports Hadoop with a variety of frameworks and can be easily extended to newer frameworks. It also has support for Spark. You can plugin and configure as many custom heuristics as you like. It is designed to help the users of Hadoop and Spark understand the internals of their flow and to help them tune their jobs easily.
 
 ## Key Features
-* Pluggable and configurable Heuristics that diagnose a job
-* Integration with Azkaban scheduler and designed to integrate with any hadoop scheduler such as Oozie.
-* Representation of historic performance of jobs and flows
-* Job level comparison of flows
-* Diagnostic heuristics for Map/Reduce and Spark
-* Easily extendable to newer job types, applications and schedulers
-* Rest API to fetch all the information
+* Pluggable and configurable rule-based heuristics that diagnose a job;
+* Out-of-the-box integration with Azkaban scheduler and support for adding any other Hadoop scheduler, such as Oozie;
+* Representation of historic performance of jobs and flows;
+* Job-level comparison of flows;
+* Diagnostic heuristics for MapReduce and Spark;
+* Easily extensible to newer job types, applications, and schedulers;
+* REST API to fetch all the information.
+
 
 ## Getting Started
 
@@ -32,11 +31,7 @@ Administrator guide: [Click here](https://github.com/linkedin/dr-elephant/wiki/A
 Tuning Tips: [Click here](https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips)
 
 ## How does it work?
-Dr. Elephant gets a list of all recent succeeded and failed applications, once every minute, from the Resource manager.
-The metadata for each application, viz, the job counters, configurations and the task data, are fetched from the Job
-History server. Once it has all the metadata, Dr. Elephant runs a set of different Heuristics on them and generates a
-diagnostic report on how the individual heuristics and the job as a whole performed. These are then tagged with one of
-five severity levels, to indicate potential performance problems.
+Dr. Elephant gets a list of all recent succeeded and failed applications, at regular intervals, from the YARN resource manager. The metadata for each application—namely, the job counters, configurations, and the task data—are fetched from the Job History server. Once it has all the metadata, Dr. Elephant runs a set of heuristics on them and generates a diagnostic report on how the individual heuristics and the job as a whole performed. These are then tagged with one of five severity levels, to indicate potential performance problems.
 
 ## Use Cases
 At Linkedin, developers use Dr. Elephant for a number of different use cases including monitoring how their flow is
