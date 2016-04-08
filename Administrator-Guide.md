@@ -22,7 +22,6 @@ $> export ELEPHANT_CONF_DIR=/path/to/conf/dir
 
 ### Deploying the binary
 
-* Prepare rpm for deployment
 * SSH into the cluster machine.
 * Switch to the appropriate user.
 ```shell
