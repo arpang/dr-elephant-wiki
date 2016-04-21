@@ -59,7 +59,7 @@ $> export PATH=$HADOOP_HOME/bin:$PATH
 ###### Database
 Dr. Elephant requires a database to store information on the jobs and analysis results.
 
-Set up and start mysql locally on your box. You can get the latest version of mysql from https://www.mysql.com/downloads/. Dr. Elephant is currently supported for mysql v. 5.6.4+.
+Set up and start mysql locally on your box. You can get the latest version of mysql from https://www.mysql.com/downloads/. Dr. Elephant is currently supported for mysql v. 5.5+, reported by Alex (wget.null@gmail.com) in the google groups forum.
 Create a database called 'drelephant'.
 ```shell
 $> mysql -u root -p
