@@ -12,6 +12,8 @@
 
 ### [Rest API] [rest-api]
 
+### [FAQ] [faq]
+
 
 [user-guide]: https://github.com/linkedin/dr-elephant/wiki/User-Guide
 
@@ -24,3 +26,5 @@
 [tuning-guide]: https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips
 
 [rest-api]: https://github.com/linkedin/dr-elephant/wiki/Rest-API
+
+[faq]: https://github.com/linkedin/dr-elephant/wiki/FAQ
