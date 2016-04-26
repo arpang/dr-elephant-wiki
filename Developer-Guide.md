@@ -99,6 +99,8 @@ To stop dr-elephant run
 $> $DR_RELEASE/bin/stop.sh
 ```
 
+Once the application starts, you can open the UI at ip:port (localhost:8080)
+
 The dr-elephant logs are generated in the 'dist' directory besides the dr-elephant release.
 ```
 $> less $DR_RELEASE/../logs/elephant/dr_elephant.log
