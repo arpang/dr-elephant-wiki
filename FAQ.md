@@ -17,7 +17,7 @@ If you wish to run it on a machine without hadoop, and want to remotely connect 
 
 ## 2. Specified key was too long; max key length is 767 bytes [ERROR:1071, SQLSTATE:42000]
 
-I would strongly suggest to make the below change in your 1.sql file
+I would strongly suggest to make the below change in your 1.sql file of the generated distribution.
 
 Replace lines 49-51, from
 ```
@@ -31,7 +31,7 @@ create index yarn_app_result_i4 on yarn_app_result (flow_exec_id(100));
 create index yarn_app_result_i5 on yarn_app_result (job_def_id(100));
 create index yarn_app_result_i6 on yarn_app_result (flow_def_id(100));
 ```
-The reason why we haven'y updated it in the code is because the h2 in-memory db doesn't support the above syntax and as a result all the fake application tests fail.
+The reason why we haven't updated it in the code is because the h2 in-memory db doesn't support the above syntax and as a result all the fake application tests fail. So you have to compile it, unzip the generated distribution and make the above change in the 1.sql file present in the distribution.
 
 Alternatively, you can add innodb_large_prefix = 1 to my.cnf and restart the mysql server if you wish to retain the index on the entire length.
 
