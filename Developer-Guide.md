@@ -10,6 +10,7 @@
   * [Adding a new Heuristic](#adding-a-new-heuristic)
   * [Configuring the Heuristics](#configuring-the-heuristics)
 * [Score Calculation](#score-calculation)
+* [Scheduler Integration Requirement](#scheduler-integration-requirement)
 
 
 ## Building Dr. Elephant
@@ -203,3 +204,24 @@ We can define the following scores,
 * Task score: The product of unweighted sum of all the severity values and number of tasks.
 * Job score: The sum of scores of all the tasks of the Job
 * Flow score: The sum of scores of all the jobs of the flow.
+
+## Scheduler Integration Requirement
+To leverage the full functionality of Dr. Elephant all the below four IDs must be provided to Dr. Elephant.
+
+1. **Job Reference ID:** 
+A unique reference to the job in the entire flow independent of the execution. This should filter all the mr jobs triggered by the job for all the historic executions of that job. 
+1. **Job Execution ID:**
+A unique reference to a specific execution of the job. This should filter all mr jobs triggered by the job for a particular execution.
+1. **Flow Reference ID:**
+A unique reference to the entire flow independent of any execution. This should filter all the historic mr jobs belonging to the flow. Note that if your scheduler supports sub-workflows, then this ID should reference the super parent flow that triggered the all the jobs and sub-workflows.
+1. **Flow Execution ID:**
+A unique reference to a specific flow execution. This should filter all mr jobs for a particular flow execution. Again note that if the scheduler supports sub-workflows, then this ID should be the super parent flow execution id that triggered the jobs and sub-workflows.
+
+Dr. Elephant expects all the above IDs to be available for it to integrate with any scheduler. Without these IDs, Dr. Elephant cannot have the level of integration support that we see for Azkaban. For example, if the job definition Id is not provided, then Dr. Elephant will not be able to capture a historic representation of the job. Similarly, if the Flow definition Id is not provided, then the flow’s history cannot be captured. In the absence of all the above links, Dr. Elephant can only show the job’s performance at the execution level(Mapreduce job level).
+
+In addition to the above 4 IDs, Dr. Elephant requires an optional job name and 4 optional links which will help users navigate easily from Dr. Elephant to the scheduler. Note that this will not affect the functionality of Dr. Elephant.
+
+1. Flow Definition Url
+1. Flow Execution Url
+1. Job Definition Url
+1. Job Execution Url
