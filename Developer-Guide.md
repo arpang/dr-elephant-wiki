@@ -208,11 +208,11 @@ We can define the following scores,
 ## Scheduler Integration Requirement
 To leverage the full functionality of Dr. Elephant all the below four IDs must be provided to Dr. Elephant.
 
-1. **Job Reference ID:** 
+1. **Job Definition ID:** 
 A unique reference to the job in the entire flow independent of the execution. This should filter all the mr jobs triggered by the job for all the historic executions of that job. 
 1. **Job Execution ID:**
 A unique reference to a specific execution of the job. This should filter all mr jobs triggered by the job for a particular execution.
-1. **Flow Reference ID:**
+1. **Flow Definition ID:**
 A unique reference to the entire flow independent of any execution. This should filter all the historic mr jobs belonging to the flow. Note that if your scheduler supports sub-workflows, then this ID should reference the super parent flow that triggered the all the jobs and sub-workflows.
 1. **Flow Execution ID:**
 A unique reference to a specific flow execution. This should filter all mr jobs for a particular flow execution. Again note that if the scheduler supports sub-workflows, then this ID should be the super parent flow execution id that triggered the jobs and sub-workflows.
