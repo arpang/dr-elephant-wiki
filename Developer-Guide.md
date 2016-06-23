@@ -28,9 +28,9 @@ $> cat compile.conf
 ```
 should output
 ```
-hadoop_version = 2.3.0                                      // The Hadoop version to compile with
-spark_version = 1.4.0                                       // The Spark version to compile with
-play_opts="-Dsbt.repository.config=app-conf/resolver.conf"  // Other play/sbt options
+hadoop_version=2.3.0                                       # The Hadoop version to compile with
+spark_version=1.4.0                                        # The Spark version to compile with
+play_opts="-Dsbt.repository.config=app-conf/resolver.conf" # Other play/sbt options
 ```
 If any of the above properties are not set then the default values will be used. Additionally, if you want to configure
 a custom repository then set the property sbt.repository.config to the resolver file location as shown in the above
