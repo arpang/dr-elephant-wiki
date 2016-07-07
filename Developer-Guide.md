@@ -23,14 +23,14 @@ Dr. Elephant runs on Play framework. Play framework must be installed before sta
 
 To compile Dr. Elephant, run the compile script. A distribution zip is generated in the zip directory. The compile script takes an optional argument to a compile configuration file where you can specify the Hadoop version and the Spark version to compile with. By default, it uses Hadoop 2.3.0 and Spark 1.4.0. In addition to the compile versions, you can specify any play/sbt options through play_opts.
 ```shell
-$> ./compile.sh [./app-conf/compile.conf]
+$> ./compile.sh [./compile.conf]
 $> cat compile.conf
 ```
 should output
 ```
 hadoop_version=2.3.0                                       # The Hadoop version to compile with
 spark_version=1.4.0                                        # The Spark version to compile with
-play_opts="-Dsbt.repository.config=app-conf/resolver.conf" # Other play/sbt options
+play_opts="-Dsbt.repository.config=./resolver.conf"        # Other play/sbt options
 ```
 If any of the above properties are not set then the default values will be used. Additionally, if you want to configure
 a custom repository then set the property sbt.repository.config to the resolver file location as shown in the above
@@ -45,7 +45,7 @@ You can run the tests by calling the compile script which will run all the unit 
 
 ##### Prerequisites
 ###### Hadoop/Spark on Yarn
-In order to deploy Dr. Elephant on your local box for testing, you need to setup Hadoop or Spark(Yarn mode) with the Resource Manager and Job History Server daemons running (a pseudo distributed mode). Instructions to run a MapReduce job on YARN in a pseudo-distributed mode can be found [here](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html).
+In order to deploy Dr. Elephant on your local box for testing, you need to setup Hadoop(version 2.x) or Spark(Yarn mode, version > 1.4.0) with the Resource Manager and Job History Server daemons running (a pseudo distributed mode). Instructions to run a MapReduce job on YARN in a pseudo-distributed mode can be found [here](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html).
 
 Export variable HADOOP_HOME if you haven't already.
 ```shell
@@ -100,7 +100,7 @@ To stop dr-elephant run
 $> $DR_RELEASE/bin/stop.sh
 ```
 
-Once the application starts, you can open the UI at ip:port (localhost:8080)
+Once the application starts, you can open the UI at ip:port (```localhost:8080```)
 
 The dr-elephant logs are generated in the 'dist' directory besides the dr-elephant release.
 ```
