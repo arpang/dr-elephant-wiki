@@ -1,40 +1,134 @@
 #### Table of Contents
-* [Map-Reduce](#map-reduce)
-  * [Mapper Data Skew](#mapper-data-skew)
-  * [Mapper GC](#mapper-gc)
-  * [Mapper Memory](#mapper-memory)
-  * [Mapper Speed](#mapper-speed)
-  * [Mapper Spill](#mapper-spill)
-  * [Mapper Time](#mapper-time)
-  * [Reducer Data Skew](#reducer-data-skew)
-  * [Reducer GC](#reducer-gc)
-  * [Reducer Memory](#reducer-memory)
-  * [Reducer Time](#reducer-time)
-  * [Shuffle and Sort](#shuffle--sort)
-* [Spark](#spark)
-  * [Spark Event Log Limit](#spark-event-log-limit)
-  * [Spark Executor Load Balance](#spark-executor-load-balance)
-  * [Spark Job Runtime](#spark-job-runtime)
-  * [Spark Memory Limit](#spark-memory-limit)
-  * [Spark Stage Runtime](#spark-stage-runtime)
+* [Metrics] (#metrics)
+  * [Used Resources] (#used-resources)
+  * [Wasted Resources] (#wasted-resources)
+  * [Runtime] (#runtime)
+  * [Wait time] (#wait-time)
+* [Heuristics] (#heuristics)
+  * [Map-Reduce](#map-reduce)
+    * [Mapper Data Skew](#mapper-data-skew)
+    * [Mapper GC](#mapper-gc)
+    * [Mapper Memory](#mapper-memory)
+    * [Mapper Speed](#mapper-speed)
+    * [Mapper Spill](#mapper-spill)
+    * [Mapper Time](#mapper-time)
+    * [Reducer Data Skew](#reducer-data-skew)
+    * [Reducer GC](#reducer-gc)
+    * [Reducer Memory](#reducer-memory)
+    * [Reducer Time](#reducer-time)
+    * [Shuffle and Sort](#shuffle--sort)
+  * [Spark](#spark)
+    * [Spark Event Log Limit](#spark-event-log-limit)
+    * [Spark Executor Load Balance](#spark-executor-load-balance)
+    * [Spark Job Runtime](#spark-job-runtime)
+    * [Spark Memory Limit](#spark-memory-limit)
+    * [Spark Stage Runtime](#spark-stage-runtime)
   
 
 
 
+## Metrics
 
+### Used Resources
+The resource usage is the amount of resource used by your job in GB Hours. 
 
+#### Calculation 
+We define resource usage of a task as the product of container size of the task and the runtime of the task.
+The resource usage of a job can thus be defined as the sum of resource usage of all the mapper tasks and all the reducer tasks.
+#### Example
+```
+Consider a job with: 
+4 mappers with runtime {12, 15, 20, 30} mins. 
+4 reducers with runtime {10 , 12, 15, 18} mins. 
+Container size of 4 GB 
+Then, 
+Resource used by all mappers: 4 * (( 12 + 15 + 20 + 30 ) / 60 ) GB Hours = 5.133 GB Hours 
+Resource used by all reducers: 4 * (( 10 + 12 + 15 + 18 ) / 60 ) GB Hours = 3.666 GB Hours 
+Total resource used by the job = 5.133 + 3.6666 = 8.799 GB Hours 
+```
+### Wasted Resources
 
+This shows the amount of resources wasted by your job in GB Hours or in the form of percentage of resources wasted. 
 
-## Map-Reduce
+#### Calculation
+```
+To calculate the resources wasted, we calculate the following: 
+The minimum memory wasted by the tasks (Map and Reduce)
+The runtime of the tasks (Map and Reduce)
+The minimum memory wasted by a task is equal to the difference between the container size and maximum task memory(peak memory) among all tasks. The resources wasted by the task is then the minimum memory wasted by the task multiplied by the duration of the task. The total resource wasted by the job then will be equal to the sum of wasted resources of all the tasks. 
+ 
+Let us define the following for each task: 
 
-### Mapper Data Skew
+peak_memory_used := The upper bound on the memory used by the task. 
+runtime := The run time of the task. 
+
+The peak_memory_used for any task is calculated by finding out the maximum of physical memory(max_physical_memory) used by all the tasks and the virtual memory(virtual_memory) used by the task. 
+Since peak_memory_used for each task is upper bounded by max_physical_memory, we can say for each task: 
+
+peak_memory_used = Max(max_physical_memory, virtual_memory/2.1)
+Where 2.1 is the cluster memory factor. 
+
+The minimum memory wasted by each task can then be calculated as: 
+
+wasted_memory = Container_size - peak_memory_used 
+
+The minimum resource wasted by each task can then be calculated as: 
+
+wasted_resource = wasted_memory * runtime
+```
+### Runtime
+
+The runtime metrics shows the total runtime of your job.
+#### Calculation
+The runtime of the job is the difference between the time when the job was submitted to the resource manager and when the job finished.
+#### Example
+Let the submit time of a job be 1461837302868 ms 
+Let the finish time of the job be 1461840952182 ms 
+The runtime of the job will be 1461840952182 - 1461837302868 = 3649314 ms or 1.01 hours
+
+### Wait time
+The waittime is the total time spent by the job in the waiting state.
+
+#### Calculation
+```
+For each task, let us define the following: 
+
+ideal_start_time := The ideal time when all the tasks should have started 
+finish_time := The time when the task finished 
+task_runtime := The runtime of the task 
+
+- Map tasks
+For map tasks, we have 
+
+ideal_start_time := The job submission time 
+
+We will find the mapper task with the longest runtime ( task_runtime_max) and the task which finished last ( finish_time_last ) 
+The total wait time of the job due to mapper tasks would be: 
+
+mapper_wait_time = finish_time_last - ( ideal_start_time + task_runtime_max) 
+
+- Reduce tasks
+For reducer tasks, we have 
+
+ideal_start_time := This is computed by looking at the reducer slow start percentage (mapreduce.job.reduce.slowstart.completedmaps) and finding the finish time of the map task after which first reducer should have started
+We will find the reducer task with the longest runtime ( task_runtime_max) and the task which finished last ( finish_time_last ) 
+
+The total wait time of the job due to reducer tasks would be: 
+reducer_wait_time = finish_time_last - ( ideal_start_time + task_runtime_max) 
+```
+
+## Heuristics
+
+### Map-Reduce
+
+#### Mapper Data Skew
 
 The mapper data skew heuristic shows whether there is a skewness in the data entering mapper tasks.  This heuristic groups the mappers into two groups; the first group has a set of tasks whose average is less than the second group. 
 
 For example, the first group may contain 900 tasks with an average of mapper data input of 7 MB per task and similarly the second group may contain 1200 task with an average of data input of 500 MB per task.
 
 
-#### Computation 
+##### Computation 
 The severity of this heuristic is computed by first recursively computing the mean and dividing the tasks into two groups based on the average memory consumed by each group.  The deviation is then found as the ratio of difference between the average memory of the two groups to the minimum of average memory of the two groups. 
 ```
 Let us define the following variables,
@@ -72,14 +166,14 @@ The overall severity of the heuristic can be computed as,
         , getSeverity(num_of_tasks,num_tasks_severity)
     )
 ```
-#### Configuration Parameters
+##### Configuration Parameters
 The values of the threshold variables deviation_severity, num_tasks_severity and files_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
-### Mapper GC
+#### Mapper GC
 
 This analysis gauges your job's GC efficiency. It shows the ratio between the task GC time and task CPU time.
 
-#### Computation
+##### Computation
 The computation of the severity of this heuristic is done first by finding the average cpu time, average runtime, and average garbage collection time for all the tasks. 
 We then find the minimum of the severity due to average runtime and ratio of average garbage collection time to average cpu time. 
 
@@ -105,16 +199,16 @@ The overall severity of the heuristic can then be computed as,
 
 ```
 
-#### Configuration parameters
+##### Configuration parameters
 
 The value of different thresholds; gc_ratio_severity and runtime_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics). 
 
 
 
-### Mapper Memory
+#### Mapper Memory
 This heuristic is for mapper memory checking. We check the ratio between your task's consumed memory AND the requested container memory. The consumed memory is the average of each task's [max consumed physical memory snapshot]. The requested container memory is the "mapreduce.map/reduce.memory.mb" config for this job, which is the max physical memory the job can request.
 
-#### Computation
+##### Computation
 
 ```
 Let us define the following variables,
@@ -137,14 +231,14 @@ The overall severity can then be computed as,
               )
 ```
 
-#### Configuration Parameters
+##### Configuration Parameters
 The values of the threshold variables container_memory_severity and memory_ratio_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
-### Mapper Speed
+#### Mapper Speed
 This analysis shows the effectiveness of your mapper code. This should allow you to determine if your mapper is CPU-bound or if your mapper is outputting huge amounts of data. This result of the analysis shows problems with mappers with significant slow speeds for the amount of data it needs to read.
 
 
-#### Computation
+##### Computation
 The severity of this heuristic is computed by finding the minimum severity of severity due to map speed and the severity due to runtime of map tasks.
 
 ```
@@ -167,16 +261,16 @@ The overall severity of the heuristic can then be computed as,
     severity = min(getSeverity(median_speed, disk_speed_severity), getSeverity(median_runtime, median_runtime_severity)
 ```
 
-#### Configuration parameters
+##### Configuration parameters
 
 The value of different thresholds; disk_speed_severity and runtime_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
-### Mapper Spill
+#### Mapper Spill
 This heuristic gauges your mapper performance in a disk I/0 perspective. Mapper spill ratio (spilled records/output records) is a critical indicator to your mapper performance: if the ratio is close to 2, it means each record is spilled to disk twice(once when in-memory sort buffer is almost full, once when merging spilled splits). This usually happens when your mappers have large amount of outputs. 
 
 
-#### Computation
+##### Computation
 
 ````
 Let us define the following parameters,
@@ -198,12 +292,12 @@ The overall severity of the heuristic can then be computed as,
 
 	severity = min(getSeverity(ratio_spills, spill_severity), getSeverity(num_tasks, num_tasks_severity)
 ```
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; spill_severity and num_tasks_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
 
-### Mapper Time
+#### Mapper Time
 This analysis shows how well the number of mappers is adjusted. This should allow you to better tweak the number of mappers for your job. There are two possible situations that needs some tuning.
 * Mapper time is too short:  This usually happens when the hadoop job has:
   * A large number of mappers
@@ -214,7 +308,7 @@ This analysis shows how well the number of mappers is adjusted. This should allo
   * Long mapper avg runtime
   * Large file size (a few GB's)
 
-#### Computation
+##### Computation
 
 ```
 Let us define the following variables,
@@ -238,14 +332,14 @@ The overall severity of the heuristic can then be computed as,
     severity = max(getSeverity(avg_size, long_runtime_severity), short_task_severity)
 
 ```
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; short_runtime_severity , long_runtime_severity and num_tasks_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
-### Reducer Data Skew
+#### Reducer Data Skew
 This analysis shows whether there is a data-skew for the data entering reducer tasks. This result of the analysis shows two groups of the spectrum, where the first group has significantly less input data compared to the second group.
 
-#### Computation
+##### Computation
 The severity of this heuristic is computed by first recursively computing the mean and dividing the tasks into two groups based on the average memory consumed by each group.  The deviation is then found as the ratio of difference between the average memory of the two groups to the minimum of average memory of the two groups. 
 
 ```
@@ -289,15 +383,15 @@ The overall severity of the heuristic can be computed as,
         , getSeverity(num_of_tasks,num_tasks_severity)
     )
 ```
-#### Configuration Parameters
+##### Configuration Parameters
 The values of the threshold variables deviation_severity, num_tasks_severity and files_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
-### Reducer GC
+#### Reducer GC
 
 This analysis gauges your job's GC efficiency. It shows the ratio between the task GC time and task CPU time.
 
-#### Computation
+##### Computation
 The computation of the severity of this heuristic is done first by finding the average cpu time, average runtime, and average garbage collection time for all the tasks. 
 We then find the minimum of the severity due to average runtime and ratio of average garbage collection time to average cpu time. 
 
@@ -323,14 +417,14 @@ The overall severity of the heuristic can then be computed as,
 
 ```
 
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; gc_ratio_severity and runtime_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics). 
 
-### Reducer Memory
+#### Reducer Memory
 
 This analysis shows the task memory utilization. We check the ratio between your task's consumed memory AND the requested container memory. The consumed memory is the average of each task's [max consumed physical memory snapshot]. The requested container memory is the "mapreduce.map/reduce.memory.mb" config for this job, which is the max physical memory the job can request. 
 
-#### Computation
+##### Computation
 
 ```
 Let us define the following variables,
@@ -353,10 +447,10 @@ The overall severity can then be computed as,
               )
 ````
 
-#### Configuration Parameters
+##### Configuration Parameters
 The values of the threshold variables container_memory_severity and memory_ratio_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics). 
 
-### Reducer Time
+#### Reducer Time
 
 This analysis shows the efficiency of your reducers. This should allow you to better adjust the number of reducers for your job. There are two possible situations that needs some tuning.
 
@@ -367,7 +461,7 @@ This analysis shows the efficiency of your reducers. This should allow you to be
   * A small number of reducers
   * Long reducer runtime
 
-#### Computation: 
+##### Computation: 
 
 ```
 Let us define the following variables,
@@ -392,16 +486,16 @@ The overall severity of the heuristic can then be computed as,
 
 ```
 
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; short_runtime_severity , long_runtime_severity and num_tasks_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
 
-### Shuffle & Sort
+#### Shuffle & Sort
 
 This analysis shows how much time the reducer spends in shuffle and sort steps versus in the reducer code. This should allow you to understand the efficiency of your reducer.
 
-#### Computation
+##### Computation
 
 ```
 Let’s define following variables,
@@ -425,25 +519,25 @@ The overall severity can then be found as,
 
 ```
 
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; avg_exec_time , avg_shuffle_time and avg_sort_time are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
-## Spark
+### Spark
 
-### Spark Event Log Limit
+#### Spark Event Log Limit
  
 Spark's event log passer currently cannot handle very large event log files. It will take too long for Dr Elephant to analyze it that might endanger the entire server. Therefore, currently we sets up a limit (100MB) for event log files, and will by-pass the log-fetching process if the log size exceeds the limit..
 
-#### Computation
+##### Computation
 
 This severity of this heuristic is CRITICAL if the data is throttled. Otherwise the severity is NONE.  
 
 
-### Spark Executor Load Balance
+#### Spark Executor Load Balance
 Unlike Map/Reduce jobs, a Spark application allocates its resources all at once and never release any during the the entire runtime process until everything is finished. It is critical to optimize the load balance situation of executors to avoid excessive usage of the cluster.
 
-#### Computation 
+##### Computation 
 
 This severity is computed by finding the deviation factor between the peak memory, lowest memory and the average memory. 
 ```
@@ -478,16 +572,16 @@ The overall severity can be found as,
                )
 
 ```
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; looser_metric_deviation_severity and metric_deviation_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
 
 
-### Spark Job Runtime 
+#### Spark Job Runtime 
 This heuristic tunes the Spark job runtime. One Spark application can be broken into multiple jobs and each jobs can be broken into multiple stages.
 
-#### Computation
+##### Computation
 ```
 
 Let us define the following variables,
@@ -509,16 +603,16 @@ i.e. severity = max(getSeverity(single_job_failure_rate, single_job_failure_rate
 where single_job_failure_rate is computed for all the jobs.
 
 ```
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; single_job_failure_rate_severity and avg_job_failure_rate_severity are easily configurable.. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
 
 
-### Spark Memory Limit
+#### Spark Memory Limit
 The current Spark applications lacks elasticity while allocating resources. Unlike Mapreduce jobs that allocates resources only for one map-reduce process and releases resources gradually during runtime, Spark allocates all the resources needed for the entire application, and does not release unused ones during the life cycle. Too much memory allocation is dangerous for the entire cluster health. As a result, we are setting limits for both the total memory allowed memory utilization ratio for Spark applications.
 
-#### Computation
+##### Computation
 
 
 ```
@@ -544,14 +638,14 @@ The overall severity can then be computed as,
                )
 
 ```
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; total_memory_severity_in_tb and mem_utilization_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
 
-### Spark Stage Runtime 
+#### Spark Stage Runtime 
 Similar to spark job runtime. One Spark application can be broken into multiple jobs and each jobs can be broken into multiple stages.
 
-#### Computation
+##### Computation
 
 ```
 
@@ -585,6 +679,6 @@ The overall severity can be found as:
 where task_failure_rate is computed for all the tasks. 
 ```
 
-#### Configuration parameters
+##### Configuration parameters
 The value of different thresholds; single_stage_tasks_failure_rate_severity, stage_runtime_severity_in_min and stage_failure_rate_severity are easily configurable. More information on how to configure these parameters can be found [here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#configuring-the-heuristics).
 
