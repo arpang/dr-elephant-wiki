@@ -6,7 +6,7 @@
 
 ### [Administrator Guide][admin-guide]
 
-### [Heuristics Guide][heuristic-guide]
+### [Metrics and Heuristics][metrics-and-heuristics]
 
 ### [Tuning Tips][tuning-guide]
 
@@ -21,7 +21,7 @@
 
 [admin-guide]: https://github.com/linkedin/dr-elephant/wiki/Administrator-Guide
 
-[heuristic-guide]: https://github.com/linkedin/dr-elephant/wiki/Heuristics-Guide
+[metrics-and-heuristics]: https://github.com/linkedin/dr-elephant/wiki/Metrics-and-Heuristics
 
 [tuning-guide]: https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips
 
