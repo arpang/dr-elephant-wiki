@@ -95,6 +95,10 @@ To start dr-elephant, run the start script specifying a path to the application'
 ```shell
 $> $DR_RELEASE/bin/start.sh $DR_RELEASE/../../app-conf
 ```
+To verify if Dr. Elephant started correctly, you can check the dr.log file
+```
+$> less $DR_RELEASE/dr.log
+```
 To stop dr-elephant run
 ```
 $> $DR_RELEASE/bin/stop.sh
