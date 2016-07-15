@@ -58,6 +58,8 @@ This is similar to the job definition, it points to the definition of your workf
 This link points to the Job history page. You can get more information about the job History page [here](#job-history-page)
 1. **Flow History**
 This link points to the Flow history page. You can get more information about the Flow history page [here](#flow-history-page)
+1. **Metrics**
+This block shows the metrics computed for each job by Dr. Elephant. It currently shows Used Resources, Wasted Resources, Runtime and Wait time. 
 
 #### Heuristic Results
 
@@ -72,35 +74,61 @@ Using the compare page, you can compare two different flow executions at a job l
 
 The job history page shows a historical comparison of all the recent executions of a particular job.
 
-![Job History Page](https://github.com/linkedin/dr-elephant/blob/master/images/wiki/job-history.png)
+### Heuristics view
 
-### Components:
+![Job History Page - Heuristics](https://github.com/linkedin/dr-elephant/blob/master/images/wiki/job-history.png)
+
+### Metrics view
+
+![Job History Page - Metrics](https://github.com/linkedin/dr-elephant/blob/master/images/wiki/jobhistorymetrics.png)
+
+### Components
 
 #### Search box
-The search box takes a single parameter which is the job's definition ID or the Url in case of Azkaban. When a user clicks on the search button after specifying the job definition id/url, the job history results are displayed below. You may also navigate to this page from the job details page. The history results contain a performance score graph and all the recent job executions in a tabular fashion.
+The search box takes a single parameter which is the job's definition ID or the Url in case of Azkaban. It also contains a drop down where user can select Heuristics, Time and Resource. When a user clicks on the search button after specifying the job definition id/url, the job history results are displayed below. You may also navigate to this page from the job details page. The history results contain a performance score graph and all the recent job executions in a tabular fashion.
 
-#### Performance score graph
+#### Heuristics Graph (Performance score graph)
 The performance score graph is a graph of the recent executions on the X axis against the performance score on the Y axis. When you hover over one of the data points, a small pop-up can be seen which shows the top three poor stages which contribute to the performance score. The performance score is computed using a simple [formula](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#score-calculation). Lower performance score suggests better execution.
 
-#### Tabular representation of job executions with heuristics for each stage
+#### Metrics Graph (Time and Resources)
+The time and resources graph shows the recent executions on the X axis against the metric on the Y axis. When you hover over one of the data points, the metrics for that particular execution are shown as a pop up. You can know more about metrics [here](https://github.com/linkedin/dr-elephant/wiki/Metrics-and-Heuristics#metrics)
+
+#### Tabular representation- Heuristics
 Below the performance graph, you can see a tabular representation of your recent executions. The first column contains the execution timestamp which redirects to the job execution on the scheduler. The remaining columns contain the different stages triggered by the job's execution. Each entry for a particular execution of a stage contains multiple colored dots(severity) which represent the heuristics. Hovering over any of the colored dot(heuristic) will open a tool tip which contains the details of the heuristic. 
+
+#### Tabular representation - Metrics
+Below the graph, you can see a tabular representation of data points of the graph. Each row represents a particular execution of the job and columns represent the mapreduce stage of the job. Each mapreduce column is divided into further columns where each column represents a metric.
 
 ## Flow History Page
 
 The flow history page shows a historical comparison of all the recent executions of a particular flow.
 
+### Heuristics view
+
 ![Flow history](https://github.com/linkedin/dr-elephant/blob/master/images/wiki/flow-history.png)
 
-### Components:
-#### Search box
-The search box takes a single parameter which is the flow's definition ID or the Url in case of Azkaban. When a user clicks on the search button after adding the definition URL/ID, a flow history graph is plotted on the performance score graph and all the recent flow executions are shown in the flow executions table.
+### Metrics view
 
-#### Performance score graph
+![Flow History Page - Metrics](https://github.com/linkedin/dr-elephant/blob/master/images/wiki/flowhistorymetrics.png)
+
+### Components
+#### Search box
+The search box takes a single parameter which is the flow's definition ID or the Url in case of Azkaban. It also contains a drop down where user can select Heuristics, Time and Resource. When a user clicks on the search button after adding the definition URL/ID, a flow history graph is plotted on the performance score graph and all the recent flow executions are shown in the flow executions table.
+
+#### Heuristics Graph (Performance score graph)
 The performance score graph is a graph of the recent flow executions on the X axis against the performance score on the Y axis. When you hover over one of the data points, a small pop can be seen which shows the top three poor jobs which contribute to the performance score. The performance score is computed using a simple [formula](#https://github.com/linkedin/dr-elephant/wiki/Developer-Guide#score-calculation). Lower performance score suggests better execution.
+
+#### Metrics Graph (Time and Resources)
+The time and resources graph shows the recent executions on the X axis against the metric on the Y axis. When you hover over one of the data points, the metrics for that particular execution are shown as a pop up. You can know more about metrics [here](https://github.com/linkedin/dr-elephant/wiki/Metrics-and-Heuristics#metrics)
+
+#### Tabular representation - Metrics
+Below the graph, you can see a tabular representation of data points of the graph. Each row represents a particular execution of the job and columns represent the mapreduce stage of the job. Each mapreduce column is divided into further columns where each column represents a metric.
 
 #### Tabular representation of flow executions and tasks for each job
 Below the performance graph, you can see a tabular representation of your recent flow executions. The first column contains the execution timestamp which redirects to the flow's execution on the scheduler. The remaining columns are for the different jobs belonging to the flow. Each entry in the table, contains multiple colored dots representing the different applications/mrjobs triggered by the particular execution of the job(job in the workflow). Hovering over any colored dot will open a tool-tip showing all the heuristics and their severity.
 
+#### Tabular representation - Metrics
+Below the graph, you can see a tabular representation of data points of the graph. Each row represents a particular execution of the workflow and columns represent jobs of the workflow. Each job column is divided into further columns where each column represents a metric.
 
 ## Help
 
