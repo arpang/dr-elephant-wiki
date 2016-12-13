@@ -8,6 +8,8 @@
 ## System Requirements
 Dr. Elephant relies on the Yarn Resource Manager and the Job History Server to fetch the applications and their details. The YARN applications and their analysis details will be stored in a backend db, currently configured for Mysql. So before you can run Dr. Elephant, Mysql and Hadoop 2 must be installed.
 
+Since [#162](https://github.com/linkedin/dr-elephant/commit/28f4025bbade1be0fc93111ee439859c530a8747), Java 6 support has been removed.
+
 ## Deploying Dr. Elephant on the cluster
 
 ### Deploying configurations
