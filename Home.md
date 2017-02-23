@@ -4,7 +4,7 @@
   <img src="https://github.com/linkedin/dr-elephant/blob/master/images/wiki/dr-elephant-logo-300x300.png"/>
 </p>
 
-**Dr. Elephant** is a performance monitoring and tuning tool for Hadoop and Spark. It automatically gathers all the metrics, runs analysis on them, and presents them in a simple way for easy consumption. Its goal is to improve developer productivity and increase cluster efficiency by making it easier to tune the jobs. It analyzes the Hadoop and Spark jobs using a set of pluggable, configurable, rule-based heuristics that provide insights on how a job performed, and then uses the results to make suggestions about how to tune the job to make it perform more efficiently. It also computes a number of metrics for a job which provides valuable information about the job performance on the cluster. 
+**Dr. Elephant** is a performance monitoring and tuning tool for Hadoop and Spark. It automatically gathers a job's metrics, analyzes them, and presents them in a simple way for easy consumption. Its goal is to improve developer productivity and increase cluster efficiency by making it easier to tune the jobs. It analyzes the Hadoop and Spark jobs using a set of pluggable, configurable, rule-based heuristics that provide insights on how a job performed, and then uses the results to make suggestions about how to tune the job to make it perform more efficiently. It also computes a number of metrics for a job which provides valuable information about the job performance on the cluster. 
 
 
 ## Why Dr. Elephant?
@@ -22,13 +22,13 @@ Most of the Hadoop optimization tools out there, whether open source or propriet
 
 ## Getting Started
 
-User guide: [Click here](https://github.com/linkedin/dr-elephant/wiki/User-Guide)
+[User Guide](https://github.com/linkedin/dr-elephant/wiki/User-Guide)
 
-Developer guide: [Click here](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide)
+[Developer Guide](https://github.com/linkedin/dr-elephant/wiki/Developer-Guide)
 
-Administrator guide: [Click here](https://github.com/linkedin/dr-elephant/wiki/Administrator-Guide)
+[Administrator Guide](https://github.com/linkedin/dr-elephant/wiki/Administrator-Guide)
 
-Tuning Tips: [Click here](https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips)
+[Tuning Tips](https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips)
 
 ## How does it work?
 Dr. Elephant gets a list of all recent succeeded and failed applications, at regular intervals, from the YARN resource manager. The metadata for each application—namely, the job counters, configurations, and the task data—are fetched from the Job History server. Once it has all the metadata, Dr. Elephant runs a set of heuristics on them and generates a diagnostic report on how the individual heuristics and the job as a whole performed. These are then tagged with one of five severity levels, to indicate potential performance problems.
