@@ -12,7 +12,7 @@
 
 ### [Tuning Tips][tuning-guide]
 
-### [Rest API] [rest-api]
+### [REST API] [rest-api]
 
 ### [How to Contribute?] [how-to-contribute]
 
