@@ -245,7 +245,7 @@ Look at the sample SchedulerConf.xml file below to know what all properties need
 </schedulers>
 ```
 
-## Contributing a new Scheduler
+### Contributing a new Scheduler
 To leverage the full functionality of Dr. Elephant all the below four IDs must be provided to Dr. Elephant.
 
 1. **Job Definition ID:** 
