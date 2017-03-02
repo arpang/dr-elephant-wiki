@@ -2,6 +2,7 @@
 * [System Requirements](#System-Requirements)
 * [Deploying Dr. Elephant](#Deploying-dr-elephant-on-the-cluster)
   * [Deploying Configurations](#deploying-configurations)
+    * [Airflow and Oozie Configuration](#airflow-and-oozie-configuration)
   * [Deploying the Binary](#deploying-the-binary)
   * [Starting/Stopping Dr. Elephant](#startingstopping-dr-elephant)
   
@@ -19,6 +20,13 @@ Since [#162](https://github.com/linkedin/dr-elephant/commit/28f4025bbade1be0fc93
 ```shell
 $> export ELEPHANT_CONF_DIR=/path/to/conf/dir
 ```
+
+#### Airflow and Oozie configuration
+
+If you are using the Airflow or Oozie schedulers you will need to edit the `SchedulerConf.xml` file located in your `$ELEPHANT_CONF_DIR`:
+* For Airflow, set the `airflowbaseurl` property to point to your Airflow service.
+* For Oozie, set the `oozie_api_url` property to point to the API URL of your Oozie scheduler service.
+** For Oozie there are additional optional properties that can be set. Please consult the documentation in the `SchedulerConf.xml` for more information.
 
 ### Deploying the binary
 
