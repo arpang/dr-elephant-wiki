@@ -26,7 +26,7 @@ $> export ELEPHANT_CONF_DIR=/path/to/conf/dir
 If you are using the Airflow or Oozie schedulers you will need to edit the `SchedulerConf.xml` file located in your `$ELEPHANT_CONF_DIR`:
 * For Airflow, set the `airflowbaseurl` property to point to your Airflow service.
 * For Oozie, set the `oozie_api_url` property to point to the API URL of your Oozie scheduler service.
-** For Oozie there are additional optional properties that can be set. Please consult the documentation in the `SchedulerConf.xml` for more information.
+  * For Oozie there are additional optional properties that can be set. Please consult the documentation in the `SchedulerConf.xml` for more information.
 
 ### Deploying the binary
 
