@@ -11,7 +11,7 @@
   * [Configuring the Heuristics](#configuring-the-heuristics)
 * [Schedulers](#schedulers)
   * [Configuring Schedulers](#configuring-schedulers)
-  * [Contributing a new Scheduler - Scheduler Integration Requirement](#scheduler-integration-requirement)
+  * [Contributing a new Scheduler](#contributing-a-new-scheduler)
 * [Score Calculation](#score-calculation)
 
 
