@@ -9,8 +9,10 @@
 * [Heuristics](#heuristics)
   * [Adding a new Heuristic](#adding-a-new-heuristic)
   * [Configuring the Heuristics](#configuring-the-heuristics)
+* [Schedulers](#schedulers)
+  * [Configuring Schedulers](#configuring-schedulers)
+  * [Contributing a new Scheduler - Scheduler Integration Requirement](#scheduler-integration-requirement)
 * [Score Calculation](#score-calculation)
-* [Scheduler Integration Requirement](#scheduler-integration-requirement)
 
 
 ## Building Dr. Elephant
@@ -193,23 +195,57 @@ A sample entry showing how to override/configure severity thresholds would look 
 </heuristic>
 ```
 
+## Schedulers
+As of today, Dr. Elephant supports 3 workflow schedulers. They are Azkaban, Airflow and Oozie. All these schedulers are enabled by default and should work out of the box except a few configurations may be required for Airflow and Oozie.
 
-## Score calculation
-A Score is a value which is used by Dr. Elephant for analyzing and comparing two different executions of workflows or jobs. The score of a MapReduce job can be as simple as the product of unweighted sum of all the severity values and number of tasks. 
+### Configuring Schedulers
 
-```java
-int score = 0;
-if (severity != Severity.NONE && severity != Severity.LOW) {
-    score = severity.getValue() * tasks;
-}
-return score;
+Schedulers and all their properties are configured in the SchedulerConf.xml file present under app-conf directory.
+
+Look at the sample SchedulerConf.xml file below to know what all properties need to be configured for the the respective schedulers.
+```xml
+<!-- Scheduler configurations -->
+<schedulers>
+
+    <scheduler>
+        <name>azkaban</name>
+        <classname>com.linkedin.drelephant.schedulers.AzkabanScheduler</classname>
+    </scheduler>
+
+    <scheduler>
+        <name>airflow</name>
+        <classname>com.linkedin.drelephant.schedulers.AirflowScheduler</classname>
+        <params>
+            <airflowbaseurl>http://localhost:8000</airflowbaseurl>
+        </params>
+    </scheduler>
+
+    <scheduler>
+        <name>oozie</name>
+        <classname>com.linkedin.drelephant.schedulers.OozieScheduler</classname>
+        <params>
+            <!-- URL of oozie host -->
+            <oozie_api_url>http://localhost:11000/oozie</oozie_api_url>
+
+            <!-- ### Non mandatory properties ###
+            ### choose authentication method
+            <oozie_auth_option>KERBEROS/SIMPLE</oozie_auth_option>
+            ### override oozie console url with a template (only parameter will be the id)
+            <oozie_job_url_template></oozie_job_url_template>
+            <oozie_job_exec_url_template></oozie_job_exec_url_template>
+            ### (if scheduled jobs are expected make sure to add following templates since oozie doesn't provide their URLS on server v4.1.0)
+            <oozie_workflow_url_template>http://localhost:11000/oozie/?job=%s</oozie_workflow_url_template>
+            <oozie_workflow_exec_url_template>http://localhost:11000/oozie/?job=%s</oozie_workflow_exec_url_template>
+            ### Use true if you can assure all app names are unique.
+            ### When true dr-elephant will unit all coordinator runs (in case of coordinator killed and then run again)
+            <oozie_app_name_uniqueness>false</oozie_app_name_uniqueness>
+            -->
+        </params>
+    </scheduler>
+</schedulers>
 ```
-We can define the following scores,
-* Task score: The product of unweighted sum of all the severity values and number of tasks.
-* Job score: The sum of scores of all the tasks of the Job
-* Flow score: The sum of scores of all the jobs of the flow.
 
-## Scheduler Integration Requirement
+## Contributing a new Scheduler - Scheduler Integration Requirement
 To leverage the full functionality of Dr. Elephant all the below four IDs must be provided to Dr. Elephant.
 
 1. **Job Definition ID:** 
@@ -229,3 +265,20 @@ In addition to the above 4 IDs, Dr. Elephant requires an optional job name and 4
 1. Flow Execution Url
 1. Job Definition Url
 1. Job Execution Url
+
+
+## Score calculation
+A Score is a value which is used by Dr. Elephant for analyzing and comparing two different executions of workflows or jobs. The score of a MapReduce job can be as simple as the product of unweighted sum of all the severity values and number of tasks. 
+
+```java
+int score = 0;
+if (severity != Severity.NONE && severity != Severity.LOW) {
+    score = severity.getValue() * tasks;
+}
+return score;
+```
+We can define the following scores,
+* Task score: The product of unweighted sum of all the severity values and number of tasks.
+* Job score: The sum of scores of all the tasks of the Job
+* Flow score: The sum of scores of all the jobs of the flow.
+
