@@ -31,7 +31,7 @@
 
 [tuning-guide]: https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips
 
-[rest-api]: https://github.com/linkedin/dr-elephant/wiki/Rest-API
+[rest-api]: https://github.com/linkedin/dr-elephant/wiki/REST-API
 
 [how-to-contribute]: https://github.com/linkedin/dr-elephant/wiki/How-to-Contribute%3F
 
