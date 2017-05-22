@@ -11,7 +11,7 @@ $> cd dr-elephant*
 ```
 
 **Step 3:**
-Install Play framework if you do not have it already. You can get the latest copy of Play framework from https://www.playframework.com/download. You basically have to download the zip, unzip it and add the play/activator command to your $PATH.
+You need to have play or activator command installed. Download the activator zip from https://downloads.typesafe.com/typesafe-activator/1.3.12/typesafe-activator-1.3.12.zip, unzip it and add the activator command to your $PATH. For older versions of Play, you need to add the play command instead of activator.
 
 **Step 4:**
 Compile Dr. Elephant code and generate the zip. Compile.sh script optionally takes a configuration file which includes the version of Hadoop and Spark to compile with. For instructions check the Developer Guide.
