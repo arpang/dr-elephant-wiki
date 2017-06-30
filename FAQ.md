@@ -52,7 +52,9 @@ Now take a look at the dr.log file generated.
 
 You have some issue with your play evolutions. As a solution, try,
 
-1. Stop Dr. Elephant. Make sure you kill the process. ```ps aux | grep elephant;```
+1. Stop Dr. Elephant. Make sure you kill the process. 
+   Run ```ps aux | grep elephant;``` to find the pid and then kill the process ```kill -9 <pid>```
 1. Delete the database including all its tables.
 1. Recreate the database.
-1. Enable evolutions, if disabled and start Dr. Elephant.
+1. Enable evolutions, if disabled and start Dr. Elephant. To enable evolutions uncomment jvm_props in your elephant.conf file.
+```jvm_props="-Devolutionplugin=enabled and -DapplyEvolutions.default=true"```
