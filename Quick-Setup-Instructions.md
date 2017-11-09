@@ -51,14 +51,9 @@ db_password=""
 ```
 
 **Step 8:**
-If you are running Dr. Elephant for the first time after creating the database, you need to enable evolutions. To do so append(or uncomment jvm_props) -Devolutionplugin=enabled and -DapplyEvolutions.default=true to jvm_props in elephant.conf file.
-
-Remember to comment this line back while starting Dr. Elephant the next time after the database is created successfully.
-
-**Step 9:**
 If your cluster is kerberised, then update the keytab user and the keytab file location in the elephant.conf file.
 
-**Step 10:**
+**Step 9:**
 To start dr-elephant, run the start script specifying a path to the application's configuration files.
 
 ```
@@ -78,10 +73,10 @@ To verify if Dr. Elephant is analyzing jobs correctly correctly check the dr-ele
 $> less $DR_RELEASE/../logs/elephant/dr_elephant.log
 ```
 
-**Step 11:**
+**Step 10:**
 Once the application starts, you can open the UI at ip:port (localhost:8080)
 
-**Step 12:**
+**Step 11:**
 To stop dr-elephant run
 ```
 $> bin/stop.sh
