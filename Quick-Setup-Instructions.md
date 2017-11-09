@@ -32,6 +32,8 @@ On the machine where you want to deploy Dr. Elephant, make sure the below env va
 ```
 $> export HADOOP_HOME=/path/to/hadoop/home
 $> export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+$> export SPARK_HOME=/path/to/spark/home
+$> export SPARK_CONF_DIR=/path/to/conf
 ```
 Add hadoop to the system path because Dr. Elephant uses 'hadoop classpath' to load the right classes.
 ```
