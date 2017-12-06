@@ -12,11 +12,11 @@
 
 ### [Tuning Tips][tuning-guide]
 
-### [REST API] [rest-api]
+### [REST API][rest-api]
 
-### [How to Contribute?] [how-to-contribute]
+### [How to Contribute?][how-to-contribute]
 
-### [FAQ] [faq]
+### [FAQ][faq]
 
 
 [quick-setup]: https://github.com/linkedin/dr-elephant/wiki/Quick-Setup-Instructions
