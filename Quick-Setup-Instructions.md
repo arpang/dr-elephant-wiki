@@ -29,7 +29,7 @@ Copy the distribution file to the machine where you want to deploy Dr. Elephant.
 
 **Step 6:** If you want to use the auto tuning feature:
    * Enable it by setting the value of property ```autotuning.enabled``` to ```true``` in `app-conf/AutoTuningConf.xml`
-   * Install python with major version 2 and minor version 6+
+   * Install python with version 2.6+
    * If you want to use a python installation other than the one set in environment:
       * Either set `PYTHON_PATH` to the path of desired python executable: 
       ````$> export PYTHON_PATH=/path/to/python/executable````
