@@ -27,7 +27,17 @@ dr-elephant*.zip
 **Step 5:**
 Copy the distribution file to the machine where you want to deploy Dr. Elephant.
 
-**Step 6:**
+**Step 6:** If you want to use the auto tuning feature:
+   * Enable it by setting the value of property ```autotuning.enabled``` to ```true``` in `app-conf/AutoTuningConf.xml`
+   * Install python with major version 2 and minor version 6+
+   * If you want to use a python installation other than the one set in environment:
+      * Either set `PYTHON_PATH` to the path of desired python executable: 
+      ````$> export PYTHON_PATH=/path/to/python/executable````
+      * Or, uncomment and set the value of optional property `python.path` to the path of desired python executable in `app-conf/AutoTuningConf.xml`
+   * Install ``inspyred`` package by executing: `sudo pip install inspyred`
+   * If pip is missing, it can be installed from Install pip: https://pip.pypa.io/en/stable/installing/
+
+**Step 7:**
 On the machine where you want to deploy Dr. Elephant, make sure the below env variables are set.
 ```
 $> export HADOOP_HOME=/path/to/hadoop/home
@@ -40,7 +50,7 @@ Add hadoop to the system path because Dr. Elephant uses 'hadoop classpath' to lo
 $> export PATH=$HADOOP_HOME/bin:$PATH
 ```
 
-**Step 7:**
+**Step 8:**
 You also need a backend to save the data. Create a mysql database and configure it in the elephant.conf file.
 ```
 # Database configuration
@@ -50,10 +60,10 @@ db_user=root
 db_password=""
 ```
 
-**Step 8:**
+**Step 9:**
 If your cluster is kerberised, then update the keytab user and the keytab file location in the elephant.conf file.
 
-**Step 9:**
+**Step 10:**
 To start dr-elephant, run the start script specifying a path to the application's configuration files.
 
 ```
@@ -73,10 +83,10 @@ To verify if Dr. Elephant is analyzing jobs correctly correctly check the dr-ele
 $> less $DR_RELEASE/../logs/elephant/dr_elephant.log
 ```
 
-**Step 10:**
+**Step 11:**
 Once the application starts, you can open the UI at ip:port (localhost:8080)
 
-**Step 11:**
+**Step 12:**
 To stop dr-elephant run
 ```
 $> bin/stop.sh
