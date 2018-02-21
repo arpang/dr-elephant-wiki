@@ -10,7 +10,7 @@
 
 ### [Metrics and Heuristics][metrics-and-heuristics]
 
-### [Auto Tuning] [auto-tuning]
+### [Auto Tuning][auto-tuning]
 
 ### [Tuning Tips][tuning-guide]
 
