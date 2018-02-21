@@ -10,6 +10,8 @@
 
 ### [Metrics and Heuristics][metrics-and-heuristics]
 
+### [Auto Tuning] [auto-tuning]
+
 ### [Tuning Tips][tuning-guide]
 
 ### [REST API][rest-api]
@@ -28,6 +30,8 @@
 [user-guide]: https://github.com/linkedin/dr-elephant/wiki/User-Guide
 
 [metrics-and-heuristics]: https://github.com/linkedin/dr-elephant/wiki/Metrics-and-Heuristics
+
+[auto-tuning]: https://github.com/linkedin/dr-elephant/wiki/Auto-Tuning
 
 [tuning-guide]: https://github.com/linkedin/dr-elephant/wiki/Tuning-Tips
 
