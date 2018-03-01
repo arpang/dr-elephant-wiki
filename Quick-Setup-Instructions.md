@@ -34,6 +34,7 @@ Copy the distribution file to the machine where you want to deploy Dr. Elephant.
       * Either set `PYTHON_PATH` to the path of desired python executable: 
       ```$> export PYTHON_PATH=/path/to/python/executable```
       * Or, uncomment and set the value of optional property `python.path` to the path of desired python executable in `app-conf/AutoTuningConf.xml`
+   * Copy any changes in `app-conf/AutoTuningConf.xml` to `test/resources/AutoTuningConf.xml` to apply them while unit testing
    * Install `inspyred` package by executing: `sudo pip install inspyred`
    * If pip is missing, it can be installed from https://pip.pypa.io/en/stable/installing/
 
