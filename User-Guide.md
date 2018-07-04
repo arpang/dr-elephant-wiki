@@ -46,7 +46,7 @@ When you click on one of the jobs from the Dashboard or the Search results, you 
 #### Job footprint with useful links
 1. **Job tracker**
 This link points to the actual job tracker for the job. When you click on this link, you’ll be redirected to your job on the job tracker. You can then see your job details, logs, map/reduce tasks etc for the job.
-1. **Job execution **
+1. **Job execution**
 This link points to the execution of your job on the scheduler. In case of Azkaban, it points to the executor link for the job.
 1. **Job definition**
 This link points to the definition of your job on the scheduler. In case of Azkaban, it points you to the job properties page for your job. 
